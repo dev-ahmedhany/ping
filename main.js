@@ -185,5 +185,4 @@ const printPing = (url) => {
 };
 
 printPing(".");
-printPing(".");
-printPing("https://www.google.com");
+// printPing("https://www.google.com");
