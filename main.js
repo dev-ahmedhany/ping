@@ -13,11 +13,13 @@ print("Hello World")
 function createLinearGradientHelper(gradientColors) {
     const WIDTH = 101; // 0 to 100
     const HEIGHT = 1;
+    print("1")
     
     // Canvas
     const canvasElement = document.createElement("CANVAS");
     canvasElement.width = WIDTH;
     canvasElement.height = HEIGHT;
+    print("1")
   
     const context = canvasElement.getContext("2d",{willReadFrequently:true});
     
@@ -27,6 +29,7 @@ function createLinearGradientHelper(gradientColors) {
     gradientColors.forEach(val => {
       gradient.addColorStop(val[1], val[0]);
     });
+    print("1")
   
     // Fill with gradient
     context.fillStyle = gradient;
@@ -38,6 +41,7 @@ function createLinearGradientHelper(gradientColors) {
     
         return `rgb(${ rgba[0] }, ${ rgba[1] }, ${ rgba[2] })`;
     }
+    print("1")
 
     return {
         getColor,
@@ -49,14 +53,17 @@ const grad = createLinearGradientHelper([
   ['#880000', .5],
   ['#220000', 1],
 ]);
+    print("1")
 
 
 
 const container = document.querySelector('.container')
 let size = 30
 
+    print("1")
 function populate(size) {
   container.style.setProperty('--size', size)
+    print("1")
   for (let i = 0; i < size * size; i++) {
     const div = document.createElement('div')
     div.classList.add('pixel')
@@ -67,6 +74,7 @@ function populate(size) {
 
 
 populate(size)
+    print("1")
 
 
 // PING
@@ -98,6 +106,7 @@ Ping.prototype.ping = function(source, callback) {
         });
     }
 
+    print("1")
     var self = this;
     self.wasSuccess = false;
     self.img = new Image();
@@ -155,6 +164,7 @@ Ping.prototype.ping = function(source, callback) {
     self.img.src = source + self.favicon + "?"+ "no-cache="+ (+new Date()); // Trigger image load with cache buster
     return promise;
 };
+    print("1")
 
 if (typeof exports !== "undefined") {
     if (typeof module !== "undefined" && module.exports) {
@@ -179,6 +189,7 @@ var settings = {
 
   let i = 0
 
+    print("1")
   
 
   const printPing = (url) => {
@@ -194,6 +205,8 @@ var settings = {
       });
     }, 1000)
   }
+    print("1")
   
   printPing("./");
+    print("1")
   
