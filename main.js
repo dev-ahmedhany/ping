@@ -43,7 +43,7 @@ const grad = createLinearGradientHelper([
 
 
 const container = document.querySelector('.container')
-let size = 30
+let size = 60
 
 function populate(size) {
   for (let i = 0; i < size * size; i++) {
@@ -179,6 +179,7 @@ var settings = {
         }
         i++
         if(i == size*size) i = 0
+        document.querySelectorAll(".pixel")[i].style.background = 'rgb(61, 61, 61)'
       });
     }, 1000)
   }
