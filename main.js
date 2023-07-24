@@ -8,6 +8,7 @@ document.body.appendChild(element)
 }
 
 print("Hello World")
+print("1")
 
 
 function createLinearGradientHelper(gradientColors) {
