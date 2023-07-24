@@ -63,7 +63,6 @@ let size = 30
 
     print("8")
 function populate(size) {
-  container.style.setProperty('--size', size)
     print("9")
   for (let i = 0; i < size * size; i++) {
     const div = document.createElement('div')

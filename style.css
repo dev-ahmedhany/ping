@@ -16,7 +16,7 @@ body{
 
 .navbar, .container{
     background-color: rgb(28, 28, 29);
-    width: min(100%,800px);
+    width:80vw;
     border-radius: 3px;
 }
 .navbar{
@@ -38,11 +38,10 @@ body{
 }
 
 .container{
-    --size: 4;
-    height: min(100%,800px);
+    height: 80vh;
     display: grid;
-    grid-template-columns: repeat(var(--size), 1fr);
-    grid-template-rows: repeat(var(--size), 1fr);
+    grid-template-columns: repeat(30, 1fr);
+    grid-template-rows: repeat(30, 1fr);
     gap: 3px;
     padding: 3px;
 }
