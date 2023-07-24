@@ -1,26 +1,13 @@
-//add document element to the end
-
-const print = (text) => {
-const element = document.createElement('div')
-element.innerHTML = text
-element.style.color = "#ffffff"
-document.body.appendChild(element)
-}
-
-print("Hello World")
-print("2")
 
 
 function createLinearGradientHelper(gradientColors) {
     const WIDTH = 101; // 0 to 100
     const HEIGHT = 1;
-    print("3")
     
     // Canvas
     const canvasElement = document.createElement("CANVAS");
     canvasElement.width = WIDTH;
     canvasElement.height = HEIGHT;
-    print("4")
   
     const context = canvasElement.getContext("2d",{willReadFrequently:true});
     
@@ -30,7 +17,6 @@ function createLinearGradientHelper(gradientColors) {
     gradientColors.forEach(val => {
       gradient.addColorStop(val[1], val[0]);
     });
-    print("5")
   
     // Fill with gradient
     context.fillStyle = gradient;
@@ -42,7 +28,6 @@ function createLinearGradientHelper(gradientColors) {
     
         return `rgb(${ rgba[0] }, ${ rgba[1] }, ${ rgba[2] })`;
     }
-    print("6")
 
     return {
         getColor,
@@ -54,16 +39,13 @@ const grad = createLinearGradientHelper([
   ['#880000', .5],
   ['#220000', 1],
 ]);
-    print("7")
 
 
 
 const container = document.querySelector('.container')
 let size = 30
 
-    print("8")
 function populate(size) {
-    print("9")
   for (let i = 0; i < size * size; i++) {
     const div = document.createElement('div')
     div.classList.add('pixel')
@@ -74,7 +56,6 @@ function populate(size) {
 
 
 populate(size)
-    print("11")
 
 
 // PING
@@ -106,7 +87,6 @@ Ping.prototype.ping = function(source, callback) {
         });
     }
 
-    print("1")
     var self = this;
     self.wasSuccess = false;
     self.img = new Image();
@@ -163,7 +143,6 @@ Ping.prototype.ping = function(source, callback) {
     self.img.src = source + self.favicon + "?"+ "no-cache="+ (+new Date()); // Trigger image load with cache buster
     return promise;
 };
-    print("12")
 
 if (typeof exports !== "undefined") {
     if (typeof module !== "undefined" && module.exports) {
@@ -188,7 +167,6 @@ var settings = {
 
   let i = 0
 
-    print("13")
   
 
   const printPing = (url) => {
@@ -204,8 +182,6 @@ var settings = {
       });
     }, 1000)
   }
-    print("14")
   
   printPing(".");
-    print("15")
   
