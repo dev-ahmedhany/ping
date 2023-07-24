@@ -160,7 +160,6 @@ Ping.prototype.ping = function(source, callback) {
         }
     }
 
-    console.log(source + self.favicon + "?" + (+new Date()));
     self.img.src = source + self.favicon + "?"+ "no-cache="+ (+new Date()); // Trigger image load with cache buster
     return promise;
 };
