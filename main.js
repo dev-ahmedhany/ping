@@ -1,3 +1,14 @@
+//add document element to the end
+
+const print = (text) => {
+const element = document.createElement('div')
+element.innerHTML = text
+element.style.color = "#ffffff"
+document.body.appendChild(element)
+}
+
+print("Hello World")
+
 
 function createLinearGradientHelper(gradientColors) {
     const WIDTH = 101; // 0 to 100
