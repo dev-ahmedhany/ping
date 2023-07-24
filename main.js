@@ -207,6 +207,6 @@ var settings = {
   }
     print("1")
   
-  printPing("./");
+  printPing(".");
     print("1")
   
