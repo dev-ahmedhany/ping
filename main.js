@@ -1,45 +1,44 @@
 
-class LinearGradientHelper {
+function createLinearGradientHelper(gradientColors) {
+    const WIDTH = 101; // 0 to 100
+    const HEIGHT = 1;
     
-    context = null
-    
-    constructor(gradientColors) { // [ [color, % ie 0, 0.5, 1], [ ... ], ... ]
-    const WIDTH = 101 // 0 to 100
-    const HEIGHT = 1
     // Canvas
     const canvasElement = document.createElement("CANVAS");
     canvasElement.width = WIDTH;
     canvasElement.height = HEIGHT;
   
-    this.context = canvasElement.getContext("2d",{willReadFrequently:true});
+    const context = canvasElement.getContext("2d",{willReadFrequently:true});
     
     // Gradient
-    const gradient =this.context.createLinearGradient(0, 0, WIDTH, 0); // x0, y0, x1, y1
+    const gradient = context.createLinearGradient(0, 0, WIDTH, 0); // x0, y0, x1, y1
     
     gradientColors.forEach(val => {
       gradient.addColorStop(val[1], val[0]);
     });
   
     // Fill with gradient
-    this.context.fillStyle = gradient;
-    this.context.fillRect(0, 0, WIDTH, HEIGHT); // x, y, width, height
-  }
-  
-  getColor(percent) // percent [0..100]
-  {
-    const color = this.context.getImageData(parseInt(percent), 0, 1, 1); // x, y, width, height
-    const rgba = color.data;
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, WIDTH, HEIGHT); // x, y, width, height
+
+    function getColor(percent) {
+        const color = context.getImageData(parseInt(percent), 0, 1, 1); // x, y, width, height
+        const rgba = color.data;
     
-    return `rgb(${ rgba[0] }, ${ rgba[1] }, ${ rgba[2] })`;
-  }
+        return `rgb(${ rgba[0] }, ${ rgba[1] }, ${ rgba[2] })`;
+    }
+
+    return {
+        getColor,
+    };
 }
 
-// background: linear-gradient(90deg, #386657 0%, #85B87A 24.48%, #FFE600 51.56%, #BA4F1A 80.21%, #940023 100%);
-const grad = new LinearGradientHelper([
+const grad = createLinearGradientHelper([
   ['#00FF00', 0],
   ['#880000', .5],
   ['#220000', 1],
-])
+]);
+
 
 
 const container = document.querySelector('.container')
