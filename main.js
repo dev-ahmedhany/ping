@@ -3,7 +3,7 @@ var log = function(error) {
   // div.style.color = "red";
   // div.innerHTML = error;
   // document.body.appendChild(div);
-  co1nsole.error(error);
+  console.error(error);
 };
 
 var createLinearGradientHelper = function(gradientColors) {
@@ -87,10 +87,10 @@ var fetchWithTimeout = function(resource, options) {
       })
       .catch(function(error) {
         clearTimeout(id);
-        reject(error);
+        resolve({
+          ok: false
+        });
       });
-  }).catch(function(error) {
-    log(error);
   });
 };
 
@@ -139,5 +139,5 @@ var printPing = function(host) {
   }
 };
 
-//printPing('.');
-printPing('https://www.google.com');
+printPing('.');
+// printPing('https://www.google.com');
