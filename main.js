@@ -1,188 +1,143 @@
-function createLinearGradientHelper(gradientColors) {
-  const WIDTH = 101; // 0 to 100
-  const HEIGHT = 1;
+var log = function(error) {
+  // const div = document.createElement("div");
+  // div.style.color = "red";
+  // div.innerHTML = error;
+  // document.body.appendChild(div);
+  console.error(error);
+};
 
-  // Canvas
-  const canvasElement = document.createElement("CANVAS");
-  canvasElement.width = WIDTH;
-  canvasElement.height = HEIGHT;
+var createLinearGradientHelper = function(gradientColors) {
+  try {
+    var WIDTH = 101; // 0 to 100
+    var HEIGHT = 1;
 
-  const context = canvasElement.getContext("2d", { willReadFrequently: true });
+    // Canvas
+    var canvasElement = document.createElement('CANVAS');
+    canvasElement.width = WIDTH;
+    canvasElement.height = HEIGHT;
 
-  // Gradient
-  const gradient = context.createLinearGradient(0, 0, WIDTH, 0); // x0, y0, x1, y1
+    var context = canvasElement.getContext('2d', {
+      willReadFrequently: true,
+    });
 
-  gradientColors.forEach((val) => {
-    gradient.addColorStop(val[1], val[0]);
-  });
+    // Gradient
+    var gradient = context.createLinearGradient(0, 0, WIDTH, 0); // x0, y0, x1, y1
 
-  // Fill with gradient
-  context.fillStyle = gradient;
-  context.fillRect(0, 0, WIDTH, HEIGHT); // x, y, width, height
+    gradientColors.forEach(function(val) {
+      gradient.addColorStop(val[1], val[0]);
+    });
 
-  function getColor(percent) {
-    const color = context.getImageData(parseInt(percent), 0, 1, 1); // x, y, width, height
-    const rgba = color.data;
+    // Fill with gradient
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, WIDTH, HEIGHT); // x, y, width, height
 
-    return `rgb(${rgba[0]}, ${rgba[1]}, ${rgba[2]})`;
+    var getColor = function(percent) {
+      var color = context.getImageData(parseInt(percent), 0, 1, 1); // x, y, width, height
+      var rgba = color.data;
+
+      return 'rgb(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ')';
+    };
+
+    return {
+      getColor: getColor,
+    };
+  } catch (error) {
+    log(error);
   }
+};
 
-  return {
-    getColor,
-  };
-}
-
-const grad = createLinearGradientHelper([
-  ["#000", 0],
-  ["#FFF", 1],
+var grad = createLinearGradientHelper([
+  ['#000', 0],
+  ['#FFF', 1],
 ]);
 
-const container = document.querySelector(".container");
-let size = 60;
+var size = 60;
 
-function populate(size) {
-  for (let i = 0; i < size * size; i++) {
-    const div = document.createElement("div");
-    div.classList.add("pixel");
-
-    container.appendChild(div);
+var populate = function(size) {
+  try {
+    var container = document.querySelector('.container');
+    for (var i = 0; i < size * size; i++) {
+      var div = document.createElement('div');
+      div.classList.add('pixel');
+      container.appendChild(div);
+    }
+  } catch (error) {
+    log(error);
   }
-}
+};
 
 populate(size);
 
-// PING
+var fetchWithTimeout = function(resource, options) {
+  if (options === void 0) {
+    options = {};
+  }
 
-/**
- * Creates a Ping instance.
- * @returns {Ping}
- * @constructor
- */
-var Ping = function (opt) {
-  this.opt = opt || {};
-  this.favicon = this.opt.favicon || "/favicon.ico";
-  this.timeout = this.opt.timeout || 0;
-  this.logError = this.opt.logError || false;
+  return new Promise(function(resolve, reject) {
+    var timeout = options.timeout || 1000;
+    var controller = new AbortController();
+    var id = setTimeout(function() {
+      controller.abort();
+    }, timeout);
+
+    fetch(resource, Object.assign({}, options, { signal: controller.signal }))
+      .then(function(response) {
+        clearTimeout(id);
+        resolve(response);
+      })
+      .catch(function(error) {
+        clearTimeout(id);
+        resolve({
+          ok: false
+        });
+      });
+  });
 };
 
-/**
- * Pings source and triggers a callback when completed.
- * @param {string} source Source of the website or server, including protocol and port.
- * @param {Function} callback Callback function to trigger when completed. Returns error and ping value.
- * @returns {Promise|undefined} A promise that both resolves and rejects to the ping value. Or undefined if the browser does not support Promise.
- */
-Ping.prototype.ping = function (source, callback) {
-  var promise, resolve, reject;
-  if (typeof Promise !== "undefined") {
-    promise = new Promise(function (_resolve, _reject) {
-      resolve = _resolve;
-      reject = _reject;
-    });
-  }
-
-  var self = this;
-  self.wasSuccess = false;
-  self.img = new Image();
-  self.img.onload = onload;
-  self.img.onerror = onerror;
-
-  var timer;
-  var start = new Date();
-
-  function onload(e) {
-    self.wasSuccess = true;
-    pingCheck.call(self, e);
-  }
-
-  function onerror(e) {
-    self.wasSuccess = false;
-    pingCheck.call(self, e);
-  }
-
-  if (self.timeout) {
-    timer = setTimeout(function () {
-      pingCheck.call(self, undefined);
-    }, self.timeout);
-  }
-
-  /**
-   * Times ping and triggers callback.
-   */
-  function pingCheck() {
-    if (timer) {
-      clearTimeout(timer);
-    }
-    var pong = new Date() - start;
-
-    if (!callback) {
-      if (promise) {
-        return this.wasSuccess ? resolve(pong) : reject(pong);
-      } else {
-        throw new Error(
-          "Promise is not supported by your browser. Use callback instead."
-        );
-      }
-    } else if (typeof callback === "function") {
-      // When operating in timeout mode, the timeout callback doesn't pass [event] as e.
-      // Notice [this] instead of [self], since .call() was used with context
-      if (!this.wasSuccess) {
-        if (self.logError) {
-          console.error("error loading resource");
+var checkResponseTime = function(testURL, options) {
+  try {
+    var time1 = performance.now();
+    return fetchWithTimeout(testURL, options)
+      .then(function(res) {
+        if (!res.ok) {
+          return 0;
         }
-        if (promise) {
-          reject(pong);
+        var time = performance.now() - time1;
+        var timeout = (options && options.timeout) || 1000;
+        return time > timeout ? timeout : time;
+      })
+      .catch(function(error) {
+        log(error);
+        return 0;
+      });
+  } catch (error) {
+    log(error);
+  }
+};
+
+var i = 0;
+
+var printPing = function(host) {
+  try {
+    var timeout = 1000;
+    setInterval(function() {
+      var url = host + '/favicon.ico?no-cache=' + +new Date();
+      checkResponseTime(url, { timeout: timeout }).then(function(data) {
+        var elements = document.querySelectorAll('.pixel');
+        if (data === 0) {
+          elements[i].style.background = '#a00';
+        } else {
+          elements[i].style.background = grad.getColor((data / timeout) * 100);
         }
-        return callback("error", pong);
-      }
-      if (promise) {
-        resolve(pong);
-      }
-      return callback(null, pong);
-    } else {
-      throw new Error("Callback is not a function.");
-    }
+        i++;
+        if (i == size * size) i = 0;
+        elements[i].style.background = 'rgb(61, 61, 61)';
+      });
+    }, timeout);
+  } catch (error) {
+    log(error);
   }
-
-  self.img.src = source + self.favicon + "?" + "no-cache=" + +new Date(); // Trigger image load with cache buster
-  return promise;
 };
 
-if (typeof exports !== "undefined") {
-  if (typeof module !== "undefined" && module.exports) {
-    module.exports = Ping;
-  }
-} else {
-  window.Ping = Ping;
-}
-
-// PING END
-
-//pinging
-
-var settings = {
-  timeout: 1000, // Optional.
-  logError: false, // Optional.
-};
-var p = new Ping(settings);
-
-let i = 0;
-
-const printPing = (url) => {
-  setInterval(() => {
-    p.ping(url, function (err, data) {
-      const elements = document.querySelectorAll(".pixel");
-      let color = grad.getColor(100);
-      if (!err) {
-        const percent = data / 10 > 100 ? 100 : data / 10;
-        color = grad.getColor(percent);
-      }
-      elements[i].style.background = color;
-      i++;
-      if (i == size * size) i = 0;
-      elements[i].style.background = "rgb(61, 61, 61)";
-    });
-  }, 1000);
-};
-
-printPing(".");
-// printPing("https://www.google.com");
+printPing('.');
+// printPing('https://www.google.com');
